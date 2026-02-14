@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Forever Valentine ❤️</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:'Segoe UI',sans-serif;
+    background:radial-gradient(circle at top,#ff9a9e,#fad0c4,#ff758c);
+    overflow:hidden;
+    color:white;
+    text-align:center;
+}
+
+/* Hidden YouTube Music */
+#music{
+    position:fixed;
+    width:0;
+    height:0;
+    border:0;
+}
+
+/* Floating hearts */
+.heart{
+    position:absolute;
+    font-size:18px;
+    opacity:0.7;
+    animation:float 8s linear infinite;
+}
+@keyframes float{
+    from{transform:translateY(100vh);}
+    to{transform:translateY(-10vh);}
+}
+
+/* Card */
+.card{
+    background:rgba(255,255,255,0.18);
+    backdrop-filter:blur(20px);
+    padding:40px;
+    border-radius:30px;
+    width:90%;
+    max-width:500px;
+    box-shadow:0 25px 70px rgba(0,0,0,0.4);
+    animation:entry 1s ease;
+    position:relative;
+}
+
+@keyframes entry{
+    from{opacity:0; transform:scale(0.8);}
+    to{opacity:1; transform:scale(1);}
+}
+
+button{
+    padding:12px 30px;
+    border-radius:30px;
+    border:none;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    margin:10px;
+    transition:0.3s;
+}
+
+.next-btn,.yes-btn{
+    background:white;
+    color:#ff4d6d;
+}
+
+.no-btn{
+    background:#ff1744;
+    color:white;
+    position:absolute;
+}
+
+button:hover{ transform:scale(1.1); }
+
+.beat{
+    animation:beat 1s infinite alternate;
+}
+@keyframes beat{
+    from{transform:scale(1);}
+    to{transform:scale(1.15);}
+}
+
+.confetti{
+    position:absolute;
+    width:10px;
+    height:10px;
+    animation:fall 3s linear forwards;
+}
+@keyframes fall{
+    to{transform:translateY(100vh) rotate(720deg); opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- Music iframe (initially empty to avoid autoplay block) -->
+<audio id="bgMusic" loop>
+    <source src="Until_I_Found_You.mp3" type="audio/mpeg">
+</audio>
+<div class="card" id="card">
+    <h1 class="beat" id="title">🥺 Sorry Betu</h1>
+    <p id="message">
+        Ladai choti thi… ❤️<br>
+        Par aaj aap thoda zyada itraye 💕
+    </p>
+    <button class="next-btn" onclick="nextStep()">Continue 💖</button>
+</div>
+
+<script>
+
+let step=1;
+let musicStarted=false;
+function startMusic(){
+    document.getElementById("bgMusic").play();
+}
+
+
+function nextStep(){
+    startMusic();
+
+    const title=document.getElementById("title");
+    const message=document.getElementById("message");
+    const card=document.getElementById("card");
+
+    if(step===1){
+        title.innerHTML="💞 I Found My World";
+        message.innerHTML="Tu hi mera jeevan… Tu hi jeene ka sahara ❤️";
+        step++;
+    }
+    else if(step===2){
+        title.innerHTML="💖 Cute Funny Shayari Just For You 💖";
+        message.innerHTML=
+        "Tum ho toh WiFi bhi fast lagta hai 😜<br>" +
+        "Tum ho toh chai bhi extra mast lagti hai ☕❤️<br><br>" +
+        "Tumse hi meri life ka password hai 💻💕<br>" +
+        "Aur tum bina life 'Error 404 – Happiness Not Found' 😭😂";
+        step++;
+    }
+    else if(step===3){
+        title.innerHTML="💘 Will You Be My Valentine?";
+        message.innerHTML="";
+        document.querySelector(".next-btn").style.display="none";
+
+        card.innerHTML+=`
+        <div>
+            <button class="yes-btn" onclick="yesClicked()">YES 💖</button>
+            <button class="no-btn" id="noBtn">NO 😜</button>
+        </div>
+        `;
+
+        const noBtn=document.getElementById("noBtn");
+        noBtn.style.top="65%";
+        noBtn.style.left="60%";
+        noBtn.addEventListener("mouseover",moveNo);
+
+        step++;
+    }
+}
+
+function moveNo(){
+    const noBtn=document.getElementById("noBtn");
+    const card=document.getElementById("card");
+
+    const maxX=card.clientWidth-noBtn.clientWidth;
+    const maxY=card.clientHeight-noBtn.clientHeight;
+
+    noBtn.style.left=Math.random()*maxX+"px";
+    noBtn.style.top=Math.random()*maxY+"px";
+}
+
+function yesClicked(){
+    document.body.innerHTML=`
+    <div style="text-align:center;">
+        <h1 class="beat">💖 YAAAAAYYYY 💖</h1>
+        <p style="font-size:22px;">
+        Officially My Valentine Forever ❤️💍
+        </p>
+    </div>
+    `;
+    createConfetti();
+}
+
+function createConfetti(){
+    for(let i=0;i<100;i++){
+        let conf=document.createElement("div");
+        conf.className="confetti";
+        conf.style.left=Math.random()*100+"vw";
+        conf.style.background=`hsl(${Math.random()*360},100%,70%)`;
+        conf.style.animationDuration=(Math.random()*2+2)+"s";
+        document.body.appendChild(conf);
+    }
+}
+
+/* Floating Hearts */
+for(let i=0;i<30;i++){
+    let heart=document.createElement("div");
+    heart.className="heart";
+    heart.innerHTML="❤️";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.fontSize=(Math.random()*20+10)+"px";
+    heart.style.animationDuration=(Math.random()*5+5)+"s";
+    document.body.appendChild(heart);
+}
+
+</script>
+
+</body>
+</html>
